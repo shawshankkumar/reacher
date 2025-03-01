@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { SessionResponse } from "./session.model";
-import config from "../config";
+import { config } from "../config";
 import { generateId, ID_PREFIXES } from "../utils/id";
 
 // Initialize Prisma client
@@ -19,7 +19,7 @@ export async function createSession(): Promise<SessionResponse> {
     const session = await prisma.session.create({
       data: {
         id: sessionId,
-        points: config.SESSION_INITIAL_POINTS,
+        points: config.session.INITIAL_POINTS,
         is_active: true,
       },
     });

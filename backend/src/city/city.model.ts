@@ -28,6 +28,29 @@ export const randomClueResponseSchema = z.object({
 // Type for random clue response
 export type RandomClueResponse = z.infer<typeof randomClueResponseSchema>;
 
+// Schema for verify guess request
+export const verifyGuessRequestSchema = z.object({
+  city_id: z.string().startsWith('city_'),
+  guess_city: z.string(),
+});
+
+// Type for verify guess request
+export type VerifyGuessRequest = z.infer<typeof verifyGuessRequestSchema>;
+
+// Schema for verify guess response
+export const verifyGuessResponseSchema = z.object({
+  correct: z.boolean(),
+  points_gained: z.number().optional(),
+  points_lost: z.number().optional(),
+  total_points: z.number(),
+  city: cityOptionSchema,
+  fun_fact: z.string(),
+  trivia: z.string(),
+});
+
+// Type for verify guess response
+export type VerifyGuessResponse = z.infer<typeof verifyGuessResponseSchema>;
+
 // Schema for city entity
 export const citySchema = z.object({
   id: z.string().startsWith('city_'),

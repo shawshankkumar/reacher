@@ -10,11 +10,14 @@ import cookieParser from 'cookie-parser';
 import sessionController from './session/session.controller';
 import cityController from './city/city.controller';
 import { requestLogger } from './middleware/logger';
-import config from './config';
+import { config } from './config';
 
 const app = express();
 const prisma = new PrismaClient();
-const { PORT, API_PREFIX, RATE_LIMIT, CORS_WHITELIST } = config;
+const { PORT } = config.server;
+const { API_PREFIX } = config.server;
+const { RATE_LIMIT } = config.security;
+const { CORS_WHITELIST } = config.security;
 
 // Logger middleware
 app.use(requestLogger);

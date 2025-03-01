@@ -25,6 +25,32 @@ const RATE_LIMIT = {
 // Session
 const SESSION_INITIAL_POINTS = 10;
 
+// Game settings
+const GAME = {
+  pointsForCorrectGuess: 2,   // Points awarded for a correct guess
+  pointsForIncorrectGuess: 1,  // Points deducted for an incorrect guess
+};
+
+export const config = {
+  env: {
+    NODE_ENV,
+    IS_PRODUCTION,
+  },
+  server: {
+    PORT,
+    API_PREFIX,
+  },
+  security: {
+    CORS_WHITELIST,
+    RATE_LIMIT,
+  },
+  session: {
+    INITIAL_POINTS: SESSION_INITIAL_POINTS,
+  },
+  game: GAME,
+};
+
+// For backward compatibility
 export default {
   NODE_ENV,
   IS_PRODUCTION,
