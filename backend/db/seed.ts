@@ -26,7 +26,7 @@ async function main() {
     console.log(`Found ${cities.length} cities in the dataset.`);
     
     // Delete all existing cities
-    await prisma.City.deleteMany({});
+    await prisma.city.deleteMany({});
     console.log('Cleared existing city data.');
     
     // Insert cities in batches to avoid overwhelming the database
@@ -39,7 +39,7 @@ async function main() {
       // Process sequentially instead of in parallel to avoid race conditions
       for (const cityData of batch) {
         try {
-          await prisma.City.upsert({
+          await prisma.city.upsert({
             where: {
               city_country: {
                 city: cityData.city,
