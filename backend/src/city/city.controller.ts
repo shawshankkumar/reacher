@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import { getRandomClue, verifyGuess } from "./city.service";
 import { verifyGuessRequestSchema } from "./city.model";
+import { verifySessionMiddleware } from "../utils/session";
 
 const router = Router();
 
@@ -39,18 +40,10 @@ const router = Router();
  *   message: string
  * }
  */
-router.get("/random", async (req: Request, res: Response) => {
+router.get("/random", verifySessionMiddleware, async (req: Request, res: Response) => {
   try {
+    // Session is already verified and attached to the request by the middleware
     const sessionId = req.headers["session-id"] as string;
-
-    if (!sessionId) {
-      res.status(400).json({
-        success: false,
-        message: "Missing session ID in headers",
-      });
-      return;
-    }
-
     const clueData = await getRandomClue(sessionId);
 
     res.status(200).json({
@@ -106,17 +99,10 @@ router.get("/random", async (req: Request, res: Response) => {
  *   message: string
  * }
  */
-router.post("/guess/verify", async (req: Request, res: Response) => {
+router.post("/guess/verify", verifySessionMiddleware, async (req: Request, res: Response) => {
   try {
+    // Session is already verified and attached to the request by the middleware
     const sessionId = req.headers["session-id"] as string;
-
-    if (!sessionId) {
-      res.status(400).json({
-        success: false,
-        message: "Missing session ID in headers",
-      });
-      return;
-    }
 
     // Validate request body
     const parseResult = verifyGuessRequestSchema.safeParse(req.body);

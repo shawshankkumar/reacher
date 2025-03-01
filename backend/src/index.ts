@@ -9,6 +9,7 @@ import xssClean from 'xss-clean';
 import cookieParser from 'cookie-parser';
 import sessionController from './session/session.controller';
 import cityController from './city/city.controller';
+import inviteController from './invite/invite.controller';
 import { requestLogger } from './middleware/logger';
 import { config } from './config';
 
@@ -61,6 +62,7 @@ app.use(xssClean());
 // API Routes
 app.use(`${API_PREFIX}/session`, sessionController);
 app.use(`${API_PREFIX}/city`, cityController);
+app.use(`${API_PREFIX}/invite`, inviteController);
 
 // Health check route
 app.get('/health', (req, res) => {

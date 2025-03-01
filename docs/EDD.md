@@ -163,10 +163,11 @@ model Invite {
   - Updates the session with the provided username (ensures uniqueness)
   - Creates a gravatar image link using the session ID hash
   - Creates a new record in the `Invite` table with a ULID with prefix `invi_`
+- **Headers**:
+  - `session-id`: The session ID (e.g., "sess_01HNCJVB2QVTMZQ3MJGYRXVT8T")
 - **Request Body**:
 ```json
 {
-  "session_id": "sess_01HNCJVB2QVTMZQ3MJGYRXVT8T",
   "username": "traveler123"
 }
 ```
@@ -179,7 +180,9 @@ model Invite {
     "points": 12,
     "image_link": "https://gravatar.com/avatar/a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p",
     "invite_id": "invi_01HNCJVB2QVTMZQ3MJGYRXVT8X",
-    "invite_link": "https://reacher.app/invite/invi_01HNCJVB2QVTMZQ3MJGYRXVT8X"
+    "invite_link": "https://reacher.app/invite/invi_01HNCJVB2QVTMZQ3MJGYRXVT8X",
+    "wa_image_url": "https://google.com",
+    "wa_text": "welcome!"
   }
 }
 ```

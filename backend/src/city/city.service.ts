@@ -7,25 +7,13 @@ const prisma = new PrismaClient();
 
 /**
  * Gets a random clue from a random city and provides multiple city options
- * @param sessionId The session ID to validate
+ * @param sessionId The session ID (already validated by middleware)
  * @returns Random clue data with options
  */
 export async function getRandomClue(
   sessionId: string
 ): Promise<RandomClueResponse> {
   try {
-    // Validate session exists and is active
-    const session = await prisma.session.findUnique({
-      where: { id: sessionId },
-    });
-
-    if (!session) {
-      throw { statusCode: 404, message: "Session not found" };
-    }
-
-    if (!session.is_active) {
-      throw { statusCode: 403, message: "Session is inactive" };
-    }
 
     // Get a random city
     const citiesCount = await prisma.city.count();
@@ -102,7 +90,7 @@ function shuffleArray<T>(array: T[]): void {
 
 /**
  * Verify a user's guess for a city and update their points accordingly.
- * @param sessionId The session ID to validate
+ * @param sessionId The session ID (already validated by middleware)
  * @param data The guess verification request data
  * @returns The verification result with updated points
  */
@@ -111,17 +99,13 @@ export async function verifyGuess(
   data: VerifyGuessRequest
 ): Promise<VerifyGuessResponse> {
   try {
-    // Validate session exists and is active
+    // Get session (already validated by middleware)
     const session = await prisma.session.findUnique({
       where: { id: sessionId },
     });
 
     if (!session) {
-      throw { statusCode: 404, message: "Session not found" };
-    }
-
-    if (!session.is_active) {
-      throw { statusCode: 403, message: "Session is inactive" };
+      throw { statusCode: 500, message: "Session not found after middleware validation" };
     }
 
     // Get the city by ID
