@@ -52,7 +52,7 @@ async function main() {
               trivia: cityData.trivia,
             },
             create: {
-              id: ulid(+new Date()),
+              id: "city_" + ulid(+new Date()),
               city: cityData.city,
               country: cityData.country,
               clues: cityData.clues,

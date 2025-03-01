@@ -16,7 +16,7 @@ datasource db {
 }
 
 model City {
-  id        String   @id @db.VarChar(26)
+  id        String   @id @db.VarChar(31)
   city      String
   country   String
   clues     Json
