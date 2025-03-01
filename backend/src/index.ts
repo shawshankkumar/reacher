@@ -11,13 +11,12 @@ app.use(express.json());
 // Health check route
 app.get('/health', (req, res) => {
   const currentTime = new Date().toISOString();
-  const uptime = process.uptime(); // Get server uptime in seconds
+  const uptime = process.uptime();
   
   res.status(200).json({
-    status: 'ok',
+    status: 'OK',
     timestamp: currentTime,
-    uptime: `${Math.floor(uptime / 60)} minutes, ${Math.floor(uptime % 60)} seconds`,
-    uptimeRaw: uptime
+    uptime: uptime
   });
 });
 

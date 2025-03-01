@@ -25,7 +25,7 @@ model Session {
   id         String    @id @db.VarChar(31) // ULID with prefix sess_
   points     Int       @default(10)
   is_active  Boolean   @default(true)
-  username   String?
+  username   String?   @unique
   image_link String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -33,17 +33,7 @@ model Session {
 }
 ```
 
-### 1.3 User
-```prisma
-model User {
-  id        String   @id @db.VarChar(31)
-  username  String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-```
-
-### 1.4 Invite
+### 1.3 Invite
 ```prisma
 model Invite {
   id         String   @id @db.VarChar(31) // ULID with prefix invi_
@@ -57,8 +47,12 @@ model Invite {
 ## 2. API Endpoints
 
 ### 2.1 Create Session
-- **Endpoint**: `POST /api/session`
+- **Endpoint**: `POST /api/v1/session/`
 - **Description**: Creates a new session with initial points and returns the session ID
+- **Database Operations**: 
+  - Creates a new record in the `Session` table with a unique ULID with prefix `sess_`
+  - Sets initial points to 10
+  - Sets is_active to true
 - **Request Body**: None
 - **Response Body**:
 ```json
@@ -72,8 +66,14 @@ model Invite {
 ```
 
 ### 2.2 Get Random Clue
-- **Endpoint**: `GET /api/clue/random`
+- **Endpoint**: `GET /api/v1/city/random`
 - **Description**: Returns a random clue from any city along with multiple city options
+- **Headers**: 
+  - `session-id`: The session ID to validate user's session
+- **Database Operations**:
+  - Validates the session ID exists and is active in the `Session` table
+  - Retrieves a random clue from a random city in the `City` table
+  - Fetches 4 random cities (including the correct one) for options
 - **Request Body**: None
 - **Response Body**:
 ```json
@@ -84,22 +84,18 @@ model Invite {
     "city_id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8T",
     "options": [
       {
-        "id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8T",
         "city": "Sydney",
         "country": "Australia"
       },
       {
-        "id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8U",
         "city": "Paris",
         "country": "France"
       },
       {
-        "id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8V",
         "city": "Rome",
         "country": "Italy"
       },
       {
-        "id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8W",
         "city": "Tokyo",
         "country": "Japan"
       }
@@ -109,14 +105,19 @@ model Invite {
 ```
 
 ### 2.3 Verify Guess
-- **Endpoint**: `POST /api/guess`
+- **Endpoint**: `POST /api/v1/city/guess/verify`
 - **Description**: Validates a user's guess and awards or deducts points
+- **Headers**: 
+  - `session-id`: The session ID to validate user's session
+- **Database Operations**:
+  - Validates the session ID exists and is active in the `Session` table
+  - Checks if the guessed city name matches the actual city for the given city_id
+  - Updates the session's points (+2 for correct guess, -1 for incorrect guess)
 - **Request Body**:
 ```json
 {
-  "session_id": "sess_01HNCJVB2QVTMZQ3MJGYRXVT8T",
   "city_id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8T",
-  "guess_id": "city_01HNCJVB2QVTMZQ3MJGYRXVT8U"
+  "guess_city": "Paris"
 }
 ```
 - **Response Body (Correct Guess)**:
@@ -155,8 +156,13 @@ model Invite {
 ```
 
 ### 2.4 Create User and Generate Invite
-- **Endpoint**: `POST /api/invite`
-- **Description**: Creates a user, updates the session with user details, and generates an invite link
+- **Endpoint**: `POST /api/v1/invite/`
+- **Description**: Updates the session with user details and generates an invite link
+- **Database Operations**: 
+  - Validates the session ID exists and is active in the `Session` table
+  - Updates the session with the provided username (ensures uniqueness)
+  - Creates a gravatar image link using the session ID hash
+  - Creates a new record in the `Invite` table with a ULID with prefix `invi_`
 - **Request Body**:
 ```json
 {
@@ -179,9 +185,12 @@ model Invite {
 ```
 
 ### 2.5 Get Invite Information
-- **Endpoint**: `GET /api/invite/:invite_id`
+- **Endpoint**: `GET /api/v1/invite/:id`
 - **Description**: Returns information about the user who generated the invite
-- **Request Parameters**: `invite_id` in URL
+- **Database Operations**: 
+  - Retrieves the invite record from the `Invite` table using the invite ID
+  - Joins with the `Session` table to get the user's information
+- **Request Parameters**: `id` in URL
 - **Response Body**:
 ```json
 {
@@ -202,19 +211,21 @@ model Invite {
 - Points system:
   - +2 points for correct guesses
   - -1 point for incorrect guesses
+- Username in session is unique across the platform
 
 ### 3.2 Clue Generation and City Selection
 - Random clue selection algorithm will pick from the entire City table
 - Option generation will include the correct city and 3 random cities
 - Ensure cities in options are distinct to avoid duplicates
 
-### 3.3 User Creation and Invite System
-- Username must be unique across the platform
+### 3.3 User and Invite System
+- Username must be unique across all sessions
 - Gravatar image will be generated using session ID hash
 - Invite IDs will be generated as ULIDs with prefix `invi_`
 - Invite links will follow the format: `https://reacher.app/invite/:invite_id`
 
-### 3.4 Error Handling
+### 3.4 Validation and Error Handling
+- Zod will be used for validating all API requests
 - All endpoints will return appropriate HTTP status codes
 - Error responses will follow the format:
 ```json
@@ -258,3 +269,4 @@ model Invite {
 - Crypto for secure hash generation (Gravatar)
 - Cors middleware for CORS handling
 - Express-rate-limit for rate limiting
+- Zod for API request validation

@@ -1,0 +1,3 @@
+# FEEDBACK
+
+1. Data set generation is actually complex. We can ask questions if they generated it using chatgpt ui or something else. If they used something else, we can ask questions about the process and how they'd improve. If they used UI ( i hope noone does ) we can ask how to streamline it. I tried using all models and they had issues generating more than 100 elements, best way I can think of right now is to write a script to first ask it to generate 100 cities, then ask about clues and other stuff in parallel. But definitely not as easy as it sounds, especially in less time and keeping quality high.
