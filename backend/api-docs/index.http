@@ -1,0 +1,73 @@
+###############################################################################
+# Reacher API Documentation
+# This file combines all API endpoints for easy access
+###############################################################################
+
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+@sessionId = sess_01JN9GSR61SQ78TAQW4NJHM53Z
+@inviteId = invi_01JN9JDG5CZRZPRNZGM6REA2AS
+
+###############################################################################
+# SESSION API
+###############################################################################
+
+###
+# Create a new session
+# @name createSession
+POST {{baseUrl}}/session
+Content-Type: {{contentType}}
+
+###############################################################################
+# CITY API
+###############################################################################
+
+###
+# Get a random city clue
+# @name getRandomClue
+GET {{baseUrl}}/city/random
+session-id: {{sessionId}}
+
+###
+# Verify a city guess
+# @name verifyGuess
+POST {{baseUrl}}/city/guess/verify
+Content-Type: {{contentType}}
+session-id: {{sessionId}}
+
+{
+  "city_id": "city_01JN9EK1EZ5AD2AMEZPQQ3T2ZC",
+  "guess_city": "Kathmandu"
+}
+
+###############################################################################
+# INVITE API
+###############################################################################
+
+###
+# Create a new invite
+# @name createInvite
+POST {{baseUrl}}/invite/
+Content-Type: {{contentType}}
+session-id: {{sessionId}}
+
+{
+  "username": "traveler12"
+}
+
+###
+# Get invite by ID
+# @name getInvite
+GET {{baseUrl}}/invite/{{inviteId}}
+Content-Type: {{contentType}}
+
+###############################################################################
+# DYNAMIC VARIABLES (REST Client Extension)
+###############################################################################
+
+# You can use the REST Client extension to capture values from responses
+# For example, to capture the session ID from createSession response:
+
+@sessionIdFromResponse = {{createSession.response.body.data.session_id}}
+
+# Then use {{sessionIdFromResponse}} in subsequent requests

@@ -1,0 +1,90 @@
+###############################################################################
+# Invite API Documentation
+# This file contains HTTP requests for the Invite API endpoints
+###############################################################################
+
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+@sessionId = sess_01JN9GSR61SQ78TAQW4NJHM53Z
+@inviteId = invi_01JN9JDG5CZRZPRNZGM6REA2AS
+
+###
+# @name createInvite
+# @description Creates a new invite for sharing
+# @method POST
+# @endpoint /invite
+# @tags invite, create
+# 
+# Creates a new invite that can be shared with others to join the game.
+# The user must have an active session to create an invite.
+# The session ID must be included in the request headers.
+#
+# @header session-id - The user's session ID
+# @header Content-Type - application/json
+#
+# @body {String} username - The username to associate with the invite (min: 3 chars, max: 30 chars)
+#
+# @returns {Object} success - Indicates if the request was successful
+# @returns {Object} data - The invite data
+# @returns {String} data.username - The username associated with the invite
+# @returns {Number} data.points - The points associated with the user
+# @returns {String} data.image_link - The image link for the user
+# @returns {String} data.invite_id - The unique invite ID (format: invi_*)
+# @returns {String} data.invite_link - The shareable invite link
+# @returns {String} data.wa_image_url - WhatsApp sharing image URL
+# @returns {String} data.wa_text - WhatsApp sharing text
+#
+POST {{baseUrl}}/invite/
+Content-Type: {{contentType}}
+session-id: {{sessionId}}
+
+{
+  "username": "traveler12"
+}
+
+###
+# Example Response:
+# {
+#   "success": true,
+#   "data": {
+#     "username": "traveler12",
+#     "points": 10,
+#     "image_link": "https://example.com/avatar.png",
+#     "invite_id": "invi_01JN9JDG5CZRZPRNZGM6REA2AS",
+#     "invite_link": "https://reacher.app/i/invi_01JN9JDG5CZRZPRNZGM6REA2AS",
+#     "wa_image_url": "https://example.com/share.png",
+#     "wa_text": "Join me in playing Reacher! Use my invite link: https://reacher.app/i/invi_01JN9JDG5CZRZPRNZGM6REA2AS"
+#   }
+# }
+
+###
+# @name getInvite
+# @description Retrieves an invite by ID
+# @method GET
+# @endpoint /invite/:id
+# @tags invite, get
+# 
+# Retrieves the details of an invite by its unique ID.
+# No authentication is required to access this endpoint.
+#
+# @path {String} id - The unique invite ID (format: invi_*)
+#
+# @returns {Object} success - Indicates if the request was successful
+# @returns {Object} data - The invite data
+# @returns {String} data.username - The username associated with the invite
+# @returns {Number} data.points - The points associated with the user
+# @returns {String} data.image_link - The image link for the user
+#
+GET {{baseUrl}}/invite/{{inviteId}}
+Content-Type: {{contentType}}
+
+###
+# Example Response:
+# {
+#   "success": true,
+#   "data": {
+#     "username": "traveler12",
+#     "points": 10,
+#     "image_link": "https://example.com/avatar.png"
+#   }
+# }

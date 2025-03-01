@@ -1,0 +1,44 @@
+###############################################################################
+# Session API Documentation
+# This file contains HTTP requests for the Session API endpoints
+###############################################################################
+
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+
+###
+# @name createSession
+# @description Creates a new session for a user
+# @method POST
+# @endpoint /session
+# @tags session, create
+# 
+# Creates a new game session for a user. The session is used to track the user's
+# progress in the game, including points earned. A session ID is generated and
+# returned, which must be included in subsequent API calls.
+# 
+# No request body is required for this endpoint.
+#
+# @returns {Object} success - Indicates if the request was successful
+# @returns {Object} data - The session data
+# @returns {String} data.session_id - The unique session ID (format: sess_*)
+# @returns {Number} data.points - The initial points assigned to the session (default: 10)
+# @returns {Boolean} data.is_active - Indicates if the session is active
+# @returns {String} data.username - The username (null if not set)
+# @returns {String} data.image_link - The user's image link (null if not set)
+#
+POST {{baseUrl}}/session
+Content-Type: {{contentType}}
+
+###
+# Example Response:
+# {
+#   "success": true,
+#   "data": {
+#     "session_id": "sess_01JN9GSR61SQ78TAQW4NJHM53Z",
+#     "points": 10,
+#     "is_active": true,
+#     "username": null,
+#     "image_link": null
+#   }
+# }
