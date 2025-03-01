@@ -8,6 +8,7 @@ import hpp from 'hpp';
 import xssClean from 'xss-clean';
 import cookieParser from 'cookie-parser';
 import sessionController from './session/session.controller';
+import cityController from './city/city.controller';
 import { requestLogger } from './middleware/logger';
 import config from './config';
 
@@ -25,7 +26,7 @@ app.use(helmet()); // Adds various HTTP headers for security
 app.use(cors({
   origin: CORS_WHITELIST.length > 0 ? CORS_WHITELIST : '*', // Use whitelist if available, otherwise allow all
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'session-id'],
   credentials: true // Allow cookies to be sent with requests
 }));
 
@@ -56,6 +57,7 @@ app.use(xssClean());
 
 // API Routes
 app.use(`${API_PREFIX}/session`, sessionController);
+app.use(`${API_PREFIX}/city`, cityController);
 
 // Health check route
 app.get('/health', (req, res) => {
