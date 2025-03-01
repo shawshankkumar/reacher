@@ -90,11 +90,24 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal server error';
+  const description = err.description || '';
+  const detailedMessage = err.detailedMessage || '';
   
-  res.status(statusCode).json({
+  const response: any = {
     success: false,
     message: statusCode === 500 ? 'Internal server error' : message // Hide detailed error in production
-  });
+  };
+  
+  // Add additional error information if available
+  if (description) {
+    response.description = description;
+  }
+  
+  if (detailedMessage) {
+    response.detailedMessage = detailedMessage;
+  }
+  
+  res.status(statusCode).json(response);
 });
 
 // Start the server

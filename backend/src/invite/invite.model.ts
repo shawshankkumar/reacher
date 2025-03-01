@@ -31,3 +31,9 @@ export const getInviteResponseSchema = z.object({
 
 // Type for get invite response
 export type GetInviteResponse = z.infer<typeof getInviteResponseSchema>;
+
+export const getInviteParamsSchema = z.object({
+  id: z.string().startsWith('invi_'),
+});
+
+export type GetInviteParams = z.infer<typeof getInviteParamsSchema>;

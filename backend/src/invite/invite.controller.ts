@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { createInvite, getInvite } from './invite.service';
-import { createInviteRequestSchema } from './invite.model';
+import { createInviteRequestSchema, getInviteParamsSchema } from './invite.model';
 import { verifySessionMiddleware } from '../utils/session';
+import { validateRequest } from '../utils/validator';
 
 const router = Router();
 
@@ -40,25 +41,13 @@ const router = Router();
  *   message: string
  * }
  */
-router.post('/', verifySessionMiddleware, async (req: Request, res: Response) => {
+router.post('/', verifySessionMiddleware, validateRequest('body', createInviteRequestSchema), async (req: Request, res: Response) => {
   try {
     // Session is already verified and attached to the request by the middleware
-    // Just need to validate the username
-    const { username } = req.body;
     const sessionId = req.headers['session-id'] as string;
-
-    // Validate request body
-    const parseResult = createInviteRequestSchema.safeParse(req.body);
-    if (!parseResult.success) {
-      res.status(400).json({
-        success: false,
-        message: 'Invalid request body',
-        errors: parseResult.error.errors,
-      });
-      return;
-    }
-
-    const inviteData = await createInvite({ session_id: sessionId, username: parseResult.data.username });
+    
+    // No need for manual validation as it's handled by validateRequest middleware
+    const inviteData = await createInvite({ session_id: sessionId, username: req.body.username });
 
     res.status(200).json({
       success: true,
@@ -103,18 +92,11 @@ router.post('/', verifySessionMiddleware, async (req: Request, res: Response) =>
  *   message: string
  * }
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', validateRequest('params', getInviteParamsSchema), async (req: Request, res: Response) => {
   try {
+    // No need for manual validation as it's handled by validateRequest middleware
     const inviteId = req.params.id;
-
-    if (!inviteId || !inviteId.startsWith('invi_')) {
-      res.status(400).json({
-        success: false,
-        message: 'Invalid invite ID format',
-      });
-      return;
-    }
-
+    
     const inviteData = await getInvite(inviteId);
 
     res.status(200).json({

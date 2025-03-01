@@ -1,8 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { CreateInviteRequest, CreateInviteResponse, GetInviteResponse } from './invite.model';
+import { CreateInviteResponse, GetInviteResponse } from './invite.model';
 import { generateId, ID_PREFIXES } from '../utils/id';
-import crypto from 'crypto';
-import { config } from '../config';
 
 // Initialize Prisma client
 const prisma = new PrismaClient();

@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { getRandomClue, verifyGuess } from "./city.service";
 import { verifyGuessRequestSchema } from "./city.model";
 import { verifySessionMiddleware } from "../utils/session";
+import { validateRequest } from "../utils/validator";
 
 const router = Router();
 
@@ -99,23 +100,13 @@ router.get("/random", verifySessionMiddleware, async (req: Request, res: Respons
  *   message: string
  * }
  */
-router.post("/guess/verify", verifySessionMiddleware, async (req: Request, res: Response) => {
+router.post("/guess/verify", verifySessionMiddleware, validateRequest("body", verifyGuessRequestSchema), async (req: Request, res: Response) => {
   try {
     // Session is already verified and attached to the request by the middleware
     const sessionId = req.headers["session-id"] as string;
 
-    // Validate request body
-    const parseResult = verifyGuessRequestSchema.safeParse(req.body);
-    if (!parseResult.success) {
-      res.status(400).json({
-        success: false,
-        message: "Invalid request body",
-        errors: parseResult.error.errors,
-      });
-      return;
-    }
-
-    const verificationResult = await verifyGuess(sessionId, parseResult.data);
+    // No need for manual validation as it's handled by validateRequest middleware
+    const verificationResult = await verifyGuess(sessionId, req.body);
 
     res.status(200).json({
       success: true,
