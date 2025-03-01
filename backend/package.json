@@ -21,12 +21,21 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "6.4.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "hpp": "^0.2.3",
     "ulid": "^2.3.0",
+    "xss-clean": "^0.1.4",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/hpp": "^0.2.6",
     "@types/node": "^22.13.8",
     "prisma": "^6.4.1",
     "ts-node-dev": "^2.0.0",

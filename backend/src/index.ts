@@ -1,16 +1,61 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import hpp from 'hpp';
+//@ts-ignore
+import xssClean from 'xss-clean';
+import cookieParser from 'cookie-parser';
 import sessionController from './session/session.controller';
+import { requestLogger } from './middleware/logger';
+import config from './config';
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 3000;
+const { PORT, API_PREFIX, RATE_LIMIT, CORS_WHITELIST } = config;
 
-// Middleware to parse JSON requests
-app.use(express.json());
+// Logger middleware
+app.use(requestLogger);
+
+// Security middleware
+app.use(helmet()); // Adds various HTTP headers for security
+
+// CORS configuration
+app.use(cors({
+  origin: CORS_WHITELIST.length > 0 ? CORS_WHITELIST : '*', // Use whitelist if available, otherwise allow all
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Allow cookies to be sent with requests
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: RATE_LIMIT.windowMs,
+  limit: RATE_LIMIT.max,
+  standardHeaders: 'draft-7', // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: 'Too many requests from this IP, please try again after 15 minutes'
+});
+
+// Apply rate limiting to all requests
+app.use(limiter);
+
+// Request parsing middleware
+app.use(express.json({ limit: '10kb' })); // Parse JSON requests with size limit
+app.use(express.urlencoded({ extended: true, limit: '10kb' })); // Parse URL-encoded requests
+
+// Cookie parser
+app.use(cookieParser());
+
+// Prevent parameter pollution
+app.use(hpp());
+
+// Prevent XSS attacks
+app.use(xssClean());
 
 // API Routes
-app.use('/api/v1/session', sessionController);
+app.use(`${API_PREFIX}/session`, sessionController);
 
 // Health check route
 app.get('/health', (req, res) => {
@@ -21,6 +66,27 @@ app.get('/health', (req, res) => {
     status: 'OK',
     timestamp: currentTime,
     uptime: uptime
+  });
+});
+
+// 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
+});
+
+// Global error handler
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Unhandled error:', err);
+  
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal server error';
+  
+  res.status(statusCode).json({
+    success: false,
+    message: statusCode === 500 ? 'Internal server error' : message // Hide detailed error in production
   });
 });
 

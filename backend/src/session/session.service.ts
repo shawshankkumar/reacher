@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { ulid } from "ulid";
 import { SessionResponse } from "./session.model";
+import config from "../config";
+import { generateId, ID_PREFIXES } from "../utils/id";
 
 // Initialize Prisma client
 const prisma = new PrismaClient();
@@ -11,14 +12,14 @@ const prisma = new PrismaClient();
  */
 export async function createSession(): Promise<SessionResponse> {
   try {
-    // Generate a ULID with sess_ prefix for the session ID
-    const sessionId = `sess_${ulid()}`;
+    // Generate a unique ID for the session
+    const sessionId = generateId(ID_PREFIXES.SESSION);
 
     // Create a new session in the database
     const session = await prisma.session.create({
       data: {
         id: sessionId,
-        points: 10,
+        points: config.SESSION_INITIAL_POINTS,
         is_active: true,
       },
     });

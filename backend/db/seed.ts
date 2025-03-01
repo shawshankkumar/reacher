@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ulid } from 'ulid';
+import { generateId, ID_PREFIXES } from '../src/utils/id';
 
 const prisma = new PrismaClient();
 
@@ -52,7 +52,7 @@ async function main() {
               trivia: cityData.trivia,
             },
             create: {
-              id: "city_" + ulid(+new Date()),
+              id: generateId(ID_PREFIXES.CITY),
               city: cityData.city,
               country: cityData.country,
               clues: cityData.clues,
