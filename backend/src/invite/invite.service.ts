@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
  * @param data The request data containing session ID and username
  * @returns The created invite data
  */
-export async function createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse> {
+export async function createInvite(data: { session_id: string; username: string }): Promise<CreateInviteResponse> {
   try {
     // Get session (already validated by middleware)
     const session = await prisma.session.findUnique({
@@ -23,23 +23,19 @@ export async function createInvite(data: CreateInviteRequest): Promise<CreateInv
       throw { statusCode: 500, message: 'Session not found after middleware validation' };
     }
 
-    // Check if username is already taken
-    if (session.username) {
-      throw { statusCode: 400, message: 'Session already has a username' };
-    }
+    // We'll allow updating the username for the same session
 
     // Check if username is already taken by another session
     const existingUsername = await prisma.session.findUnique({
       where: { username: data.username },
     });
 
-    if (existingUsername) {
-      throw { statusCode: 409, message: 'Username already taken' };
+    if (existingUsername && existingUsername.id !== data.session_id) {
+      throw { statusCode: 409, message: 'Username already taken by another user' };
     }
 
     // Generate gravatar image link using session ID hash
-    const hash = crypto.createHash('md5').update(data.session_id).digest('hex');
-    const imageLink = `https://gravatar.com/avatar/${hash}?d=identicon`;
+    const imageLink = `https://gravatar.com/avatar/${data.session_id}?d=identicon`;
 
     // Generate invite ID
     const inviteId = generateId(ID_PREFIXES.INVITE);

@@ -36,10 +36,11 @@ export function verifySessionMiddleware(req: Request, res: Response, next: NextF
   const sessionId = req.headers['session-id'] as string;
 
   if (!sessionId) {
-    return res.status(400).json({
+    res.status(400).json({
       success: false,
       message: 'Missing session ID in headers',
     });
+    return
   }
 
   verifySession(sessionId)

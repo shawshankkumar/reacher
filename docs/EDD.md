@@ -160,8 +160,9 @@ model Invite {
 - **Description**: Updates the session with user details and generates an invite link
 - **Database Operations**: 
   - Validates the session ID exists and is active in the `Session` table
-  - Updates the session with the provided username (ensures uniqueness)
-  - Creates a gravatar image link using the session ID hash
+  - Updates the session with the provided username (ensures uniqueness across users)
+  - Allows updating an existing username for the same session
+  - Creates a gravatar image link using the session ID
   - Creates a new record in the `Invite` table with a ULID with prefix `invi_`
 - **Headers**:
   - `session-id`: The session ID (e.g., "sess_01HNCJVB2QVTMZQ3MJGYRXVT8T")
