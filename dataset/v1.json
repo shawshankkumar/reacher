@@ -634,29 +634,29 @@
     "country": "Czech Republic",
     "clues": [
       {
-        "value": "This city's astronomical clock is the oldest still operating.",
+        "value": "This city is home to the world's oldest still-operating astronomical clock, installed in 1410, which features a procession of the Twelve Apostles appearing every hour.",
         "difficulty": "low"
       },
       {
-        "value": "Known as the 'City of a Hundred Spires'.",
+        "value": "This city is known as the 'City of a Hundred Spires' due to its skyline dominated by Gothic church towers and Baroque domes visible throughout its historic center.",
         "difficulty": "low"
       },
       {
-        "value": "Its Charles Bridge has 30 Baroque statues.",
+        "value": "This city's famous stone bridge, completed in 1402, is lined with 30 Baroque statues and has withstood numerous floods over the centuries, connecting the Old Town with the Lesser Quarter.",
         "difficulty": "high"
       },
       {
-        "value": "Home to the largest castle complex in the world.",
+        "value": "This city is home to the largest ancient castle complex in the world according to the Guinness Book of Records, covering an area of almost 70,000 square meters and housing a cathedral, palace, gardens, and several museums.",
         "difficulty": "high"
       }
     ],
     "fun_fact": [
-      "The Lennon Wall has been covered in Beatles lyrics since 1980s.",
-      "Has a church with a chandelier made of human bones"
+      "The city's Lennon Wall began as a simple tribute to John Lennon after his assassination in 1980, but during Communist rule it became a symbol of freedom and resistance where young Czechs would write grievances against the regime, leading to clashes between students and police called the 'Lennon War.'",
+      "The city's Sedlec Ossuary, commonly known as the 'Bone Church,' contains the artistically arranged skeletons of between 40,000 and 70,000 people, including a chandelier that contains at least one of every bone in the human body."
     ],
     "trivia": [
-      "The narrowest street is just 50cm wide.",
-      "Inventor of contact lenses was born here"
+      "The city's narrowest street is just 50 centimeters wide and is equipped with traffic lights to prevent pedestrians from colliding with each other when passing through.",
+      "The inventor of soft contact lenses, Otto Wichterle, was born in this city and developed the first pair on his kitchen table using a children's toy construction set and bicycle dynamo parts in 1961."
     ]
   },
   {
@@ -1216,7 +1216,7 @@
         "difficulty": "high"
       },
       {
-        "value": "Original name meant "Valley of the Sun".",
+        "value": "Original name meant Valley of the Sun.",
         "difficulty": "high"
       }
     ],
@@ -1666,7 +1666,7 @@
         "difficulty": "high"
       },
       {
-        "value": "24/7糯米糍 (mochi) factory.",
+        "value": "Beco do Batman street art alley.",
         "difficulty": "high"
       }
     ],
@@ -1705,7 +1705,7 @@
       "70% commute via informal danfo buses"
     ],
     "trivia": [
-      "Name means "lakes" in Portuguese",
+      "Name means lakes in Portuguese",
       "First Nigerian capital until 1991"
     ]
   },
@@ -2044,29 +2044,29 @@
     "country": "Bulgaria",
     "clues": [
       {
-        "value": "Alexander Nevsky Cathedral is a landmark",
+        "value": "This city is home to the Alexander Nevsky Cathedral, one of the largest Eastern Orthodox cathedrals in the world, with golden domes that can hold 10,000 people and houses a collection of Orthodox icons.",
         "difficulty": "low"
       },
       {
-        "value": "National Historical Museum is the largest",
+        "value": "This city sits at the foot of Vitosha Mountain, a popular ski destination in winter and hiking spot in summer, providing a dramatic backdrop to the urban landscape.",
         "difficulty": "low"
       },
       {
-        "value": "Vitosha Mountain offers panoramic views",
+        "value": "This city has thermal mineral springs running beneath it, with some public fountains dispensing natural mineral water that locals regularly collect in bottles for drinking.",
         "difficulty": "high"
       },
       {
-        "value": "Sofia is home to the National Opera and Ballet",
+        "value": "This city has remnants of Roman Serdica visible throughout its center, including ancient streets and buildings preserved beneath modern structures and an amphitheater discovered during metro construction in 2004.",
         "difficulty": "high"
       }
     ],
     "fun_fact": [
-      "City has a rich history dating back to the 8th century BCE",
-      "Sofia is home to the Bulgarian Academy of Sciences"
+      "The city's name means 'wisdom' in Greek, and according to legend, Emperor Justinian exclaimed 'Sophia!' (meaning wisdom) when he first saw the Church of St. Sophia, eventually giving the entire city its name.",
+      "The city has layers of civilizations built one upon another, with the modern metro system revealing archaeological treasures from Thracian, Roman, Byzantine, and Ottoman periods, turning some stations into mini-museums with ancient artifacts displayed behind glass."
     ],
     "trivia": [
-      "Sofia is the second-oldest city in Europe",
-      "The city hosts the Sofia Film Festival"
+      "The city is one of the oldest in Europe, continuously inhabited since at least 7000 BCE, predating Athens, Rome, and Constantinople, with its first settlement dating back to the Neolithic age.",
+      "The city is the only European capital with a mountain that offers skiing within city limits, allowing residents to take public transportation from downtown to the ski slopes in less than 30 minutes."
     ]
   },
   {
