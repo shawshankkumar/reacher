@@ -1,0 +1,108 @@
+###############################################################################
+# City API Documentation
+# This file contains HTTP requests for the City API endpoints
+###############################################################################
+
+@baseUrl = http://localhost:3000/api/v1
+@contentType = application/json
+@sessionId = sess_01JN9GSR61SQ78TAQW4NJHM53Z
+
+###
+# @name getRandomClue
+# @description Retrieves a random city clue for the game
+# @method GET
+# @endpoint /city/random
+# @tags city, clue, game
+# 
+# Retrieves a random city clue along with options for the guessing game.
+# The user must have an active session to access this endpoint.
+# The session ID must be included in the request headers.
+#
+# @header session-id - The user's session ID
+#
+# @returns {Object} success - Indicates if the request was successful
+# @returns {Object} data - The clue data
+# @returns {String} data.clue - The text clue about the city
+# @returns {String} data.city_id - The unique identifier for the city (format: city_*)
+# @returns {Array} data.options - Array of city options for the user to choose from
+# @returns {String} data.options[].city - Name of the city
+# @returns {String} data.options[].country - Country where the city is located
+#
+GET {{baseUrl}}/city/random
+session-id: {{sessionId}}
+
+###
+# Example Response:
+# {
+#   "success": true,
+#   "data": {
+#     "clue": "This city is known for being the gateway to Mount Everest",
+#     "city_id": "city_01JN9EK1EZ5AD2AMEZPQQ3T2ZC",
+#     "options": [
+#       { "city": "Kathmandu", "country": "Nepal" },
+#       { "city": "Delhi", "country": "India" },
+#       { "city": "Bangkok", "country": "Thailand" },
+#       { "city": "Thimphu", "country": "Bhutan" }
+#     ]
+#   }
+# }
+
+###
+# @name verifyGuess
+# @description Verifies a user's guess for a city
+# @method POST
+# @endpoint /city/guess/verify
+# @tags city, guess, verification
+# 
+# Verifies if the user's guess for a city is correct.
+# The user must have an active session to access this endpoint.
+# The session ID must be included in the request headers.
+#
+# @header session-id - The user's session ID
+# @header Content-Type - application/json
+#
+# @body {String} city_id - The ID of the city to verify (format: city_*)
+# @body {String} guess_city - The user's guess for the city name
+#
+# @returns {Object} success - Indicates if the request was successful
+# @returns {Object} data - The verification result
+# @returns {Boolean} data.correct - Whether the guess was correct
+# @returns {Number} data.points_gained - Points earned if correct (optional)
+# @returns {Number} data.points_lost - Points deducted if incorrect (optional)
+# @returns {Number} data.total_points - Updated total points for the session
+# @returns {String} data.fun_fact - A fun fact about the city
+# @returns {String} data.trivia - Trivia about the city
+#
+POST {{baseUrl}}/city/guess/verify
+Content-Type: {{contentType}}
+session-id: {{sessionId}}
+
+{
+  "city_id": "city_01JN9EK1EZ5AD2AMEZPQQ3T2ZC",
+  "guess_city": "Kathmandu"
+}
+
+###
+# Example Response for Correct Guess:
+# {
+#   "success": true,
+#   "data": {
+#     "correct": true,
+#     "points_gained": 5,
+#     "total_points": 15,
+#     "fun_fact": "Kathmandu has the densest concentration of UNESCO World Heritage Sites in the world.",
+#     "trivia": "The name Kathmandu comes from an ancient temple called Kasthamandap, which was built from a single tree."
+#   }
+# }
+#
+# Example Response for Incorrect Guess:
+# {
+#   "success": true,
+#   "data": {
+#     "correct": false,
+#     "points_lost": 2,
+#     "total_points": 8,
+#     "fun_fact": "Kathmandu has the densest concentration of UNESCO World Heritage Sites in the world.",
+#     "trivia": "The name Kathmandu comes from an ancient temple called Kasthamandap, which was built from a single tree."
+#   }
+# }

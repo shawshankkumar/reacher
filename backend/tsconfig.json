@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
+    "sourceMap": true,
+    "lib": ["es2018", "esnext.asynciterable"]
+  },
+  "include": ["src/**/*", "db/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
